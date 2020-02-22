@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/fe-counter-app/precache-manifest.620a820a7b903dc117029a1d93850e26.js"
+  "/fe-counter-app/precache-manifest.89a0984c928c782db88cc73216f61a8b.js"
 );
 
 self.addEventListener('message', (event) => {
