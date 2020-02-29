@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import Counter from './Counter';
 import AddCounterForm from './AddCounterForm';
+import ConfirmationDelete from './ConfirmationDelete';
 
 function App() {
 
@@ -13,6 +14,8 @@ function App() {
   ];
 
   const [counters, setCounters] = useState(InitialCountersState);
+  const [confirmCounter, setConfirmCounter] = useState({});
+
 
   const resetTotalCount = () => {
     console.log('resetTotalCount');
@@ -37,9 +40,18 @@ function App() {
     setCounters(newCounters);
   };
 
-  const removeCounter = (id) => {
-    const newCounters = counters.filter(el => el.id !== id);
+  const confirmRemoveCounter = counter => {
+    setConfirmCounter(counter);
+  };
+
+  const removeConfirmed = () => {
+    const newCounters = counters.filter(el => el.id !== confirmCounter.id);
     setCounters(newCounters);
+    setConfirmCounter({});
+  };
+
+  const confirmDeleteCancel = () => {
+    setConfirmCounter({})
   };
 
   const addCounter = (name, count) => {
@@ -57,25 +69,30 @@ function App() {
       <h1>Counters</h1>
 
       Total {counters.reduce((acc, cur) => acc + cur.count, 0)}
-      <button onClick={resetTotalCount} className='btn btn-danger'>Reset total count</button>
+      <button onClick={resetTotalCount} className='btn btn-danger'>Reset total
+        count
+      </button>
 
       <hr />
 
       {
         counters.map(el => <Counter key={el.id}
-                                    id={el.id}
-                                    name={el.name}
-                                    count={el.count}
+                                    counter={el}
                                     increment={incrementCounter}
                                     decrement={decrementCounter}
-                                    remove={removeCounter}
+                                    remove={confirmRemoveCounter}
         />)
       }
-
 
       <hr />
 
       <AddCounterForm onSubmit={addCounter} />
+
+      <ConfirmationDelete
+        name={confirmCounter.name}
+        onSuccess={removeConfirmed}
+        onCancel={confirmDeleteCancel}
+      />
 
     </div>
   );
